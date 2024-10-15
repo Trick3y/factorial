@@ -1,0 +1,36 @@
+import unittest
+from factorial import recur_factorial
+
+class TestFactorialDivisionConsistency(unittest.TestCase):
+    def test_just_above_base_case(self):
+        # Test immediately above the base case to ensure correct step from base
+        self.assertEqual(recur_factorial(2) // 2, recur_factorial(1), "n=2 division consistency failed")
+        self.assertEqual(recur_factorial(3) // 3, recur_factorial(2), "n=3 division consistency failed")
+
+    def test_mid_range_integers(self):
+        # Test with mid-range integers to check the recursive accuracy in middle values
+        self.assertEqual(recur_factorial(10) // 10, recur_factorial(9), "n=10 division consistency failed")
+        self.assertEqual(recur_factorial(11) // 11, recur_factorial(10), "n=11 division consistency failed")
+        self.assertEqual(recur_factorial(12) // 12, recur_factorial(11), "n=12 division consistency failed")
+
+    def test_high_values(self):
+        # Test with high values to assess computational efficiency and accuracy at scale
+        self.assertEqual(recur_factorial(20) // 20, recur_factorial(19), "n=20 division consistency failed")
+        self.assertEqual(recur_factorial(21) // 21, recur_factorial(20), "n=21 division consistency failed")
+        self.assertEqual(recur_factorial(22) // 22, recur_factorial(21), "n=22 division consistency failed")
+
+    def test_sequential_decrements(self):
+        # Test by decrementing from a higher number to see if the chain of computations holds
+        current = recur_factorial(10)
+        for i in range(10, 6, -1):
+            with self.subTest(i=i):
+                self.assertEqual(current // i, recur_factorial(i - 1), f"n={i} decrement test failed")
+                current = current // i
+
+    def test_edge_case_near_boundary(self):
+        # Focus close to the boundary condition to test limits
+        self.assertEqual(recur_factorial(2) // 2, recur_factorial(1), "n=2 near boundary test failed")
+        self.assertEqual(recur_factorial(3) // 3, recur_factorial(2), "n=3 near boundary test failed")
+
+if __name__ == "__main__":
+    unittest.main()
